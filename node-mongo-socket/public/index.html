@@ -6,7 +6,7 @@
   <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-
+<h1>Chat</h1>
   <div class="chat">
     <input type="text" class="chat-name" placeholder="Enter your name">
     <div class="chat-messages">
@@ -20,17 +20,50 @@
     !function(document, $$, undefined) {
 
       $$ = $$ || function(s) {
-        return document.querySelector(s)
+        return document.querySelector(s);
       };
 
-      var textarea = $$('.chat textarea');
-      var chatName = $$('.chat-name');
+      var textareaElement = $$('.chat textarea');
+      var chatNameElement = $$('.chat-name');
+      var statusElement   = $$('.chat-status span');
 
       var config = {
         socket: {
           url: 'http://127.0.0.1:8080'
+        },
+        status: {
+          delay: 300
         }
       };
+
+      var status = {
+        el: statusElement,
+        default: statusElement.TextContent,
+        delay: config.status.delay,
+        interval: null,
+        poll: function() {
+          this.interval = setTimeout(function() {
+            this.log('interval');
+            this.set(this.default);
+            clearTimeout(this.interval);
+          }.bind(this), this.delay);
+        },
+        check: function(s) {
+          if (s !== this.default) {
+            this.poll();
+          } else {
+            this.log(s);
+          }
+        },
+        set: function(s) {
+          status.textContent = s;
+          this.check(s);
+        },
+        log: function(s) {
+          console.log('status: ', s);
+        }
+      }
+
 
       try {
         var socket = io.connect(config.socket.url);
@@ -38,25 +71,33 @@
         // set status to warn user
       }
 
+      function inputMessage(event) {
+        var name = chatNameElement.value
+        var message = this.value;
+
+        console.log(event.which);
+        if (event.which === 13 && !event.shiftKey) {
+
+          console.log('Send!');
+
+          socket.emit('input', {
+            name: name,
+            message: message
+          });
+
+          event.preventDefault();
+        }
+      };
+
       if (socket) {
         console.log('has socket');
-        // listen for keydown
-        textarea.addEventListener('keydown', function(event) {
-          var name = chatName.value
-          var message = this.value;
-
-          console.log(event.which);
-          if (event.which === 13 && !event.shiftKey) {
-
-            console.log('Send!');
-
-            socket.emit('input', {
-              name: name,
-              message: message
-            });
-
-          }
+        // listen for a status
+        socket.on('status', function(data) {
+          status.set(data);
         });
+
+        // listen for keydown
+        textareaElement.addEventListener('keydown', inputMessage);
 
       } else {
         console.log('undefined socket');

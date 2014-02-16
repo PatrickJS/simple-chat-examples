@@ -26,6 +26,9 @@ mongo.connect(config.mongo.url, function(err, db) {
     console.log('Someone has connected');
 
     var col = db.collection('messages');
+    var sendStatus = function(s) {
+      socket.emit('status', s);
+    };
 
     // wait for input
     socket.on('input', function(data) {
@@ -35,6 +38,7 @@ mongo.connect(config.mongo.url, function(err, db) {
 
       if (whitespacePattern.test(name) || whitespacePattern.test(message)) {
         console.log('Invalid input', data);
+        sendStatus('Name and Message is required');
       } else {
         col.insert({name: name, message: message}, function(err) {
           console.log('Valid input', data);
