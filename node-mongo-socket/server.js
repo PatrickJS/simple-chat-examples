@@ -45,8 +45,15 @@ mongo.connect(config.mongo.url, function(err, db) {
         console.log('Invalid input', data);
         sendStatus('Name and Message is required');
       } else {
-        col.insert({name: name, message: message}, function(err) {
-          console.log('Valid input', data);
+        var obj = {
+          name: name,
+          message: message,
+          created_at: new Date()
+        };
+        col.insert(obj, function(err) {
+          console.log('Valid input', obj);
+          client.emit('output', [obj]);
+
           sendStatus({
             message: 'Message sent!',
             clear: true

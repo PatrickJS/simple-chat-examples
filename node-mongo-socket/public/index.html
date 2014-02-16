@@ -25,6 +25,7 @@
 
       var textareaElement = $$('.chat textarea');
       var chatNameElement = $$('.chat-name');
+      var messagesElement = $$('.chat-messages');
       var statusElement   = $$('.chat-status span');
 
       var config = {
@@ -97,6 +98,18 @@
         // listen for output
         socket.on('output', function(data) {
           console.log(data);
+          if (data.length) {
+            data.forEach(function(obj, index) {
+              var message = document.createElement('div');
+              message.setAttribute('class', 'chat-message');
+              message.textContent = obj.name + ': ' + obj.message + ' date: ' + obj.created_at;
+
+              // append to messages div
+              messagesElement.appendChild(message);
+              messagesElement.insertBefore(message, messagesElement.firstChild);
+
+            })
+          }
         });
 
         // listen for a status
