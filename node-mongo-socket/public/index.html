@@ -95,7 +95,12 @@
         console.log('has socket');
         // listen for a status
         socket.on('status', function(data) {
-          status.set(data);
+          status.set((typeof data === 'object') ? data.message : data);
+
+          if (data.clear === true) {
+            textareaElement.value = '';
+          }
+
         });
 
         // listen for keydown

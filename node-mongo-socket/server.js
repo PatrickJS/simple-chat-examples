@@ -42,6 +42,10 @@ mongo.connect(config.mongo.url, function(err, db) {
       } else {
         col.insert({name: name, message: message}, function(err) {
           console.log('Valid input', data);
+          sendStatus({
+            message: 'Message sent!',
+            clear: true
+          });
         });
       }
 
