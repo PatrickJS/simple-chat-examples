@@ -6,6 +6,7 @@
   <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
+
   <div class="chat">
     <form>
       <input type="text" class="chat-name" placeholder="Enter your name">
@@ -15,6 +16,47 @@
       <div class="chat-status">Status: <span>Idle</span></div>
     </form>
   </div>
+
   <script type="text/javascript" src="http://127.0.0.1:8080/socket.io/socket.io.js"></script>
+  <script type="text/javascript">
+    !function(document, $$, undefined) {
+
+      $$ = $$ || function(s) {
+        return document.querySelector(s)
+      };
+
+      var textarea = $$('.chat-name');
+      var chatName = $$('.chat-name');
+
+      var config = {
+        socket: {
+          url: 'http://127.0.0.1:8080'
+        }
+      };
+
+      try {
+        var socket = io.connect(config.socket.url);
+      } catch(err) {
+        // set status to warn user
+      }
+
+      if (socket) {
+        // listen for keydown
+        textarea.addEventListener('keydown', function(event) {
+          var self = this;
+          var name = chatName.value
+
+          console.log(event.which);
+          if (event.which === 13 && !event.shiftKey) {
+
+          }
+        });
+
+      } else {
+        console.log('undefined socket');
+      }
+
+    }(document, window.$$);
+  </script>
 </body>
 </html>
