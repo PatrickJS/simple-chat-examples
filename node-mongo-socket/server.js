@@ -18,6 +18,15 @@ var config = {
 
 client = client.listen(config.socket.port).sockets;
 
-client.on('connection', function(socket) {
-  console.log('Someone has connected');
+
+mongo.connect(config.mongo.url, function(err, db) {
+  if (err) {
+    throw err;
+  }
+
+  client.on('connection', function(socket) {
+    console.log('Someone has connected');
+  });
+
 });
+
