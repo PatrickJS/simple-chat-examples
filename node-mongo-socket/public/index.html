@@ -41,7 +41,7 @@
         default: statusElement.textContent,
         delay: config.status.delay,
         interval: null,
-        poll: function() {
+        timeout: function() {
           this.interval = setTimeout(function() {
             this.log('interval');
             this.set(this.default);
@@ -50,7 +50,7 @@
         },
         check: function(s) {
           if (s !== this.default) {
-            this.poll();
+            this.timeout();
           } else {
             this.log(s);
           }
