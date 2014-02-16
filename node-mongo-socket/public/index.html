@@ -93,6 +93,12 @@
 
       if (socket) {
         console.log('has socket');
+
+        // listen for output
+        socket.on('output', function(data) {
+          console.log(data);
+        });
+
         // listen for a status
         socket.on('status', function(data) {
           status.set((typeof data === 'object') ? data.message : data);
