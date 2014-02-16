@@ -15,5 +15,45 @@
 body,
 textarea,
 input {
-  font-family: 'Lato', sans-serif;
+  font: 13px 'Lato', sans-serif;
 }
+
+.chat-message {
+  margin-bottom: 10px
+}
+
+.chat {
+  max-width: 300px;
+}
+
+.chat-messages,
+.chat textarea,
+.chat-name {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #bbb;
+}
+
+.chat-messages {
+  height: 300px;
+  overflow-y: scroll;
+}
+.chat textarea,
+.chat-name {
+  margin: 0;
+  outline: none;
+}
+
+.chat-name {
+  border-bottom: 0;
+}
+
+.chat textarea {
+  border-top: 0;
+  max-width: 100%;
+}
+
+.chat-status {
+  color: #bbb;
+}
+
