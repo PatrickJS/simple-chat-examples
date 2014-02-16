@@ -29,6 +29,11 @@ mongo.connect(config.mongo.url, function(err, db) {
     var sendStatus = function(s) {
       socket.emit('status', s);
     };
+    col.find().limit(100).sort({_id: 1}).toArray(function(err, result) {
+      if (err) throw err;
+
+      socket.emit('output', result);
+    });
 
     // wait for input
     socket.on('input', function(data) {
