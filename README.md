@@ -1,4 +1,4 @@
-simple-chat-client-examples
+simple-chat-examples
 ===========================
 
 These are simple chat example apps
