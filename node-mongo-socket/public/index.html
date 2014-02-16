@@ -8,13 +8,11 @@
 <body>
 
   <div class="chat">
-    <form>
-      <input type="text" class="chat-name" placeholder="Enter your name">
-      <div class="chat-messages">
-      </div>
-      <textarea placeholder="Type your message"></textarea>
-      <div class="chat-status">Status: <span>Idle</span></div>
-    </form>
+    <input type="text" class="chat-name" placeholder="Enter your name">
+    <div class="chat-messages">
+    </div>
+    <textarea placeholder="Type your message"></textarea>
+    <div class="chat-status">Status: <span>Idle</span></div>
   </div>
 
   <script type="text/javascript" src="http://127.0.0.1:8080/socket.io/socket.io.js"></script>
@@ -25,7 +23,7 @@
         return document.querySelector(s)
       };
 
-      var textarea = $$('.chat-name');
+      var textarea = $$('.chat textarea');
       var chatName = $$('.chat-name');
 
       var config = {
@@ -41,13 +39,21 @@
       }
 
       if (socket) {
+        console.log('has socket');
         // listen for keydown
         textarea.addEventListener('keydown', function(event) {
-          var self = this;
           var name = chatName.value
+          var message = this.value;
 
           console.log(event.which);
           if (event.which === 13 && !event.shiftKey) {
+
+            console.log('Send!');
+
+            socket.emit('input', {
+              name: name,
+              message: message
+            });
 
           }
         });

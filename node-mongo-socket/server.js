@@ -37,7 +37,7 @@ mongo.connect(config.mongo.url, function(err, db) {
         console.log('Invalid input', data);
       } else {
         col.insert({name: name, message: message}, function(err) {
-          console.log('inserted', data);
+          console.log('Valid input', data);
         });
       }
 
