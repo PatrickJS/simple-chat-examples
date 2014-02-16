@@ -1,9 +1,8 @@
 'use strict';
 
 var mongo   = require('mongodb').MongoClient;
-var Promise = require('bluebird');
+// var Promise = require('bluebird');
 var client  = require('socket.io');
-
 var config = {
 
   mongo: {
@@ -18,7 +17,6 @@ var config = {
 
 client = client.listen(config.socket.port).sockets;
 
-
 mongo.connect(config.mongo.url, function(err, db) {
   if (err) {
     throw err;
@@ -26,6 +24,25 @@ mongo.connect(config.mongo.url, function(err, db) {
 
   client.on('connection', function(socket) {
     console.log('Someone has connected');
+
+    var col = db.collection('messages');
+
+    // wait for input
+    socket.on('input', function(data) {
+      var name = data.name;
+      var message = data.message;
+      var whitespacePattern = /^\s*$/;
+
+      if (whitespacePattern.test(name) || whitespacePattern.test(message)) {
+        console.log('Invalid input', data);
+      } else {
+        col.insert({name: name, message: message}, function(err) {
+          console.log('inserted', data);
+        });
+      }
+
+    });
+
   });
 
 });
