@@ -32,13 +32,13 @@
           url: 'http://127.0.0.1:8080'
         },
         status: {
-          delay: 300
+          delay: 3000
         }
       };
 
       var status = {
         el: statusElement,
-        default: statusElement.TextContent,
+        default: statusElement.textContent,
         delay: config.status.delay,
         interval: null,
         poll: function() {
@@ -56,13 +56,15 @@
           }
         },
         set: function(s) {
-          status.textContent = s;
+          this.el.textContent = s;
           this.check(s);
         },
         log: function(s) {
           console.log('status: ', s);
         }
-      }
+      };
+
+      status.set('Connecting...');
 
 
       try {
